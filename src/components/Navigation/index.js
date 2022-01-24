@@ -30,7 +30,7 @@ export default function NavBar() {
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
         <Nav
-          className="mr-auto my-2 my-lg-0"
+          className="me-auto"
           style={{ maxHeight: '100px' }}
           navbarScroll
         >
@@ -49,7 +49,7 @@ export default function NavBar() {
             test1
           </Link></Nav.Item>
         </Nav>
-        <Form style={{ marginRight: '5%' }} inline>
+        <Form className="d-flex">
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
           <Button variant="outline-info">Search</Button>
         </Form>
@@ -67,16 +67,18 @@ export default function NavBar() {
 
   const NavigationNonAuth = () => (
     <Navbar variant="dark" bg="dark" expand="lg">
-      <Navbar.Brand><Link
-        style={{ color: 'inherit', textDecoration: "none" }}
-        to={ROUTES.LANDING}
-      >
-        Navbar scroll
-      </Link></Navbar.Brand>
+      <Navbar.Brand>
+        <Link
+          style={{ color: 'inherit', textDecoration: "none" }}
+          to={ROUTES.LANDING}
+        >
+          Navbar scroll
+        </Link>
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />
-      <Navbar.Collapse id="navbarScroll">
+      <Navbar.Collapse id="responsive-navbar-nav">
         <Nav
-          className="mr-auto my-2 my-lg-0"
+          className="me-auto"
           style={{ maxHeight: '100px' }}
           navbarScroll
         >
@@ -97,7 +99,7 @@ export default function NavBar() {
             </Link>
           </Nav.Item>
         </Nav>
-        <Form style={{ marginRight: '5%' }} inline>
+        <Form className="d-flex">
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
           <Button variant="outline-info">Search</Button>
         </Form>
