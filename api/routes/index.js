@@ -12,18 +12,24 @@ const axios = require('axios')
 const vgmUrl = 'https://genius.com/Jeremias-blaue-augen-lyrics';
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/getSong', function (req, res, next) {
+  res.set({
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+})
   let wikiUrls = []
   rp(vgmUrl)
     .then(function (html) {
       const $ = cheerio.load(html);
-      console.log(html)
+      //console.log(html)
       //success!
 
       //Need to find some way to add a more specific search for the music
       wikiUrls.push($('#lyrics-root', html).map(function (i, el) {
         // this === el
-        return $(this).html()
+        let str = $(this).html().replace(/<br\s*\/?>/gi,'\n');
+        
+        return $(str).text()
       })
       .toArray())
 
