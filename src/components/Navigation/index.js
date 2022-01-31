@@ -4,6 +4,7 @@ import { AuthUserContext } from '../Session';
 
 import { Nav, NavDropdown, Navbar, Form, Button, FormControl } from 'react-bootstrap';
 import { Input } from 'antd'
+import axios from 'axios'
 
 import SignOutButton from '../SignOut'
 import * as ROUTES from "../../constants/routes";
@@ -12,7 +13,26 @@ const { Search } = Input;
 
 export default function NavBar() {
 
-  const onSearch = value => console.log(value);
+  const onSearch = value => {
+    axios.get('http://api.genius.com/search?q=' + value, {
+      headers: {
+        'mode': 'no-cors',
+        'Authorization': 'Bearer 1-LjtfA4MInZyXSKCt3CkScS8SPOXHZoINzcCHjI79a1-hOtPXAFpyIfPukKlod5'
+      }
+    })
+      .then(function (response) {
+        // handle success
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+    console.log(value);
+  }
 
   const Navigation = ({ authUser }) => (
     <div>

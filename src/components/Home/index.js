@@ -7,7 +7,7 @@ import { Row, Col, Card } from 'react-bootstrap'
 function HomePage() {
   const [song, setSong] = useState([])
   useEffect(() => {
-    axios.get('http://localhost:4000')
+    axios.get('http://localhost:4000/getSong')
       .then(function (response) {
         // handle success
         console.log(response.data);
@@ -24,7 +24,7 @@ function HomePage() {
   return (
     <div>
       <h1>Home Page</h1>
-      <div style={{whiteSpace: "pre-line"}}>{song}</div>
+      <div style={{ whiteSpace: "pre-line" }}>{song}</div>
       <div style={{ margin: '5%' }}>
         <Row xs={1} md={4} className="g-4">
           {Array.from({ length: 4 }).map((_, idx) => (
