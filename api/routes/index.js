@@ -3,10 +3,11 @@ var router = express.Router();
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 const url = 'https://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States';
+const got = require("got")
 
 const fs = require('fs');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const { JSDOM } = require("jsdom")
+const axios = require('axios')
 
 const vgmUrl = 'https://genius.com/Jeremias-blaue-augen-lyrics';
 
@@ -22,7 +23,7 @@ router.get('/', function (req, res, next) {
       //Need to find some way to add a more specific search for the music
       wikiUrls.push($('#lyrics-root', html).map(function (i, el) {
         // this === el
-        return $(this).text()
+        return $(this).html()
       })
       .toArray())
 
@@ -36,15 +37,6 @@ router.get('/', function (req, res, next) {
       //handle error
     });
 
-
-  /*got(vgmUrl).then(response => {
-    const dom = new JSDOM(response.body);
-    //console.log(dom)
-    console.log(dom.window.document.getElementById('lyrics-root').textContent);
-    res.send(dom.window.document.getElementById('lyrics-root'))
-  }).catch(err => {
-    console.log(err);
-  });*/
 });
 
 module.exports = router;

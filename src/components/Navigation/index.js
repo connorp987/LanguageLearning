@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 import { AuthUserContext } from '../Session';
 
 import { Nav, NavDropdown, Navbar, Form, Button, FormControl } from 'react-bootstrap';
+import { Input } from 'antd'
 
 import SignOutButton from '../SignOut'
 import * as ROUTES from "../../constants/routes";
 
+const { Search } = Input;
+
 export default function NavBar() {
+
+  const onSearch = value => console.log(value);
 
   const Navigation = ({ authUser }) => (
     <div>
@@ -49,10 +54,7 @@ export default function NavBar() {
             test1
           </Link></Nav.Item>
         </Nav>
-        <Form className="d-flex">
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-info">Search</Button>
-        </Form>
+        <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
         <Nav style={{ marginRight: '5%' }}>
           <NavDropdown title="Profile" id="navbarScrollingDropdown">
             <Nav.Item key="action:1"><Link style={{ color: 'inherit', textDecoration: "none" }} to={ROUTES.ADMIN}>Admin</Link></Nav.Item>
@@ -99,10 +101,7 @@ export default function NavBar() {
             </Link>
           </Nav.Item>
         </Nav>
-        <Form className="d-flex">
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-info">Search</Button>
-        </Form>
+        <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
         <Nav style={{ marginRight: '5%' }}>
           <Nav.Item bsPrefix='nav-link'>
             <Link
