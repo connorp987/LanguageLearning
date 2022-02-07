@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import { AuthUserContext } from '../Session';
 
-import { Nav, NavDropdown, Navbar, Form, Button, FormControl } from 'react-bootstrap';
+import { Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import { Input } from 'antd'
 import axios from 'axios'
 
@@ -64,7 +64,7 @@ export default function NavBar() {
               style={{ color: 'inherit', textDecoration: "none" }}
               to={ROUTES.LANDING}
             >
-              test
+              Home
             </Link>
           </Nav.Item>
           <Nav.Item bsPrefix='nav-link'><Link
@@ -109,7 +109,7 @@ export default function NavBar() {
               style={{ color: 'inherit', textDecoration: "none" }}
               to={ROUTES.LANDING}
             >
-              test
+              Home
             </Link>
           </Nav.Item>
           <Nav.Item bsPrefix='nav-link'>

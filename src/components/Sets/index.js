@@ -1,5 +1,21 @@
 import React from 'react'
 import { FlashcardArray } from "react-quizlet-flashcard";
+import { Table } from 'antd';
+
+const columns = [
+  {
+    title: 'Front',
+    dataIndex: 'front',
+    key: 'front',
+    //render: text => <a>{text}</a>,
+  },
+  {
+    title: 'Back',
+    dataIndex: 'back',
+    key: 'back',
+  }
+];
+
 
 export default function Sets({match}) {
     const id = match.params.id;
@@ -45,8 +61,12 @@ export default function Sets({match}) {
 
     return (
         <div>
-            <FlashcardArray cards={cards} />
+            <div style={{marginLeft: '30%'}}>
+                <FlashcardArray cards={cards} />
+            </div>
+            
             {cards[id-1].front}
+            <Table pagination={false} columns={columns} dataSource={cards} />
         </div>
     )
 }
