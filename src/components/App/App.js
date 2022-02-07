@@ -9,6 +9,7 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
+import CreatePage from '../Create'
 import Sets from '../Sets'
 
 import * as ROUTES from '../../constants/routes';
@@ -32,6 +33,7 @@ const App = () => (
       <Route exact path={ROUTES.HOME} component={HomePage} />
       <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+      <Route exact path={ROUTES.CREATE} component={CreatePage} />
       <Route path='/set/:id' component={Sets} />
     </div>
   </Router>

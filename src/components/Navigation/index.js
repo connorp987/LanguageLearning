@@ -69,9 +69,9 @@ export default function NavBar() {
           </Nav.Item>
           <Nav.Item bsPrefix='nav-link'><Link
             style={{ color: 'inherit', textDecoration: "none" }}
-            to={ROUTES.TEST}
+            to={ROUTES.CREATE}
           >
-            test1
+            Create
           </Link></Nav.Item>
         </Nav>
         <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
@@ -112,14 +112,7 @@ export default function NavBar() {
               Home
             </Link>
           </Nav.Item>
-          <Nav.Item bsPrefix='nav-link'>
-            <Link
-              style={{ color: 'inherit', textDecoration: "none" }}
-              to={ROUTES.TEST}
-            >
-              test1
-            </Link>
-          </Nav.Item>
+          
         </Nav>
         <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
         <Nav style={{ marginRight: '5%' }}>
