@@ -17,7 +17,6 @@ export default function Landing() {
       back: "Sacramento",
     },
     {
-      
       id: 3,
       front: "What is the capital of New York?",
       back: "Albany",

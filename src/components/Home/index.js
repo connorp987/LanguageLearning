@@ -6,21 +6,8 @@ import { Row, Col, Card } from 'react-bootstrap'
 
 function HomePage() {
   const [song, setSong] = useState([])
-  useEffect(() => {
-    axios.get('http://localhost:4000/getSong')
-      .then(function (response) {
-        // handle success
-        console.log(response.data);
-        setSong(response.data[0])
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }, [])
+  
+  
   return (
     <div>
       <h1>Home Page</h1>
