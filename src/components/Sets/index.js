@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { FlashcardArray } from "react-quizlet-flashcard";
-import { Table, Input } from 'antd';
+import { Table, Input, Button } from 'antd';
+import { withAuthorization } from '../Session';
 
 const columns = [
   {
@@ -17,7 +18,7 @@ const columns = [
 ];
 
 
-export default function Sets({ match }) {
+function Sets({ match }) {
   const id = match.params.id;
   const [tempStringOne, setTempStringOne] = useState('')
   const [tempStringTwo, setTempStringTwo] = useState('')
@@ -59,6 +60,15 @@ export default function Sets({ match }) {
     back: "Phoenix",
   }])
 
+  function handleChange(e) {
+    if (e.target.dataset.key == "firstBox") {
+      setTempStringOne(e.target.value)
+    }
+    if (e.target.dataset.key == "secondBox") {
+      setTempStringTwo(e.target.value)
+    }
+  }
+
   function handleKeyDown(e) {
     if (e.key === 'Tab') {
       if (e.target.dataset.key == "firstBox") {
@@ -70,14 +80,14 @@ export default function Sets({ match }) {
       console.log(tempStringOne, tempStringTwo)
       if (tempStringOne != '' && tempStringTwo != '') {
         setCards(cards => [...cards, {
-          id: cards.length+1,
+          id: cards.length + 1,
           front: tempStringOne,
           back: tempStringTwo
         }]);
-        
+
       }
-      
-      console.log('do validate',cards);
+
+      console.log('do validate', cards);
       console.log(e.target.value);
     }
   }
@@ -91,12 +101,24 @@ export default function Sets({ match }) {
       {cards[id - 1].front}
       <Table pagination={false} columns={columns} dataSource={cards} />
 
-      <div style={{marginLeft: "25%"}}>
+      <div style={{ marginLeft: "25%" }}>
         <label>Enter a new term:</label>
-        <Input data-key="firstBox" style={{ width: "8%" }} type="text" onKeyDown={handleKeyDown} />
-        <Input data-key="secondBox" style={{ width: "8%" }} type="text" onKeyDown={handleKeyDown} />
+        <Input data-key="firstBox" style={{ width: "8%" }} type="text" onChange={handleChange} onKeyDown={handleKeyDown} />
+        <Input data-key="secondBox" style={{ width: "8%" }} type="text" onChange={handleChange} onKeyDown={handleKeyDown} />
+        <Button onClick={() => {
+          setCards(cards => [...cards, {
+            id: cards.length + 1,
+            front: tempStringOne,
+            back: tempStringTwo
+          }])
+        }
+        } >Add new word</Button>
       </div>
 
     </div>
   )
 }
+
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Sets);

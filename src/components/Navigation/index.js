@@ -50,7 +50,7 @@ export default function NavBar() {
         style={{ color: 'inherit', textDecoration: "none" }}
         to={ROUTES.LANDING}
       >
-        Navbar scroll
+        LangMusik
       </Link></Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
@@ -94,7 +94,7 @@ export default function NavBar() {
           style={{ color: 'inherit', textDecoration: "none" }}
           to={ROUTES.LANDING}
         >
-          Navbar scroll
+          LangMusik
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />

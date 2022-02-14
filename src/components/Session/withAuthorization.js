@@ -7,13 +7,14 @@ import { LoadingOutlined } from '@ant-design/icons';
  
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase/firebase';
+import * as ROUTES from '../../constants/routes';
  
 const withAuthorization = (condition, Route) => Component => {
   class WithAuthorization extends React.Component {
     componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
         if (!condition(authUser)) {
-          this.props.history.push(Route);
+          this.props.history.push(ROUTES.SIGN_IN);
         }
       });
     }
