@@ -8,6 +8,10 @@ const got = require("got")
 const fs = require('fs');
 const { JSDOM } = require("jsdom")
 const axios = require('axios')
+const { getDatabase } = require('firebase-admin/database');
+
+// Get a database reference to our blog
+
 
 const vgmUrl = 'https://genius.com/Jeremias-blaue-augen-lyrics';
 
@@ -19,26 +23,31 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://langmusik-b09c6-default-rtdb.firebaseio.com"
 });
-
+const db = getDatabase();
+//const ref = db.ref('users');
 
 router.post('/createNewSet', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
 
   if (req.body.userUID) {
-    admin.auth().verifyIdToken(req.body.userUID)
-      .then(() => {
-        var database = admin.database()
-        var uid = req.query.uid
-        database.ref('/users/' + uid).once('value')
-          .then(function (snapshot) {
-            var data = snapshot.val() ? snapshot.val() : []
-            res.status(200).send({ our_data: data })
-          }).catch(function (error) {
-            res.status(500).json({ error: error })
-          })
-      }).catch(() => {
-        res.status(403).send('Unauthorized')
-      })
+    let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
+    let postID = postRef.key
+    postRef.set(['test', 'anotherkey', postID])
+
+    let testArray = db.ref('users/' + req.body.userUID + '/posts/-MwTTrTXaTE2NVS_aAxs')
+    testArray.on('value', (snapshot) => {
+      let temp = snapshot.val()
+      
+      //let updatedTemp = temp.push("testttttt")
+      console.log(updatedTemp)
+      //testArray.set(updatedTemp)
+    }, (errorObject) => {
+      console.log('The read failed: ' + errorObject.name);
+    }); 
+
+   
+
+    res.status(200).send("success")
   } else {
     res.status(403).send('Unauthorized')
   }
