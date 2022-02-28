@@ -41,9 +41,10 @@ class Landing extends Component {
 
   }
 
+//TODO: next i need to edit the sets page so that the firebase unique id is what each page is redirected by
 
   render() {
-    console.log(this.state.sets)
+    //console.log(this.state.sets)
     return (
       <div>
 
