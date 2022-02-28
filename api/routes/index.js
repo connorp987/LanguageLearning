@@ -31,21 +31,8 @@ router.post('/createNewSet', function (req, res, next) {
 
   if (req.body.userUID) {
     let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
-    let postID = postRef.key
-    postRef.set(['test', 'anotherkey', postID])
-
-    let testArray = db.ref('users/' + req.body.userUID + '/posts/-MwTTrTXaTE2NVS_aAxs')
-    testArray.on('value', (snapshot) => {
-      let temp = snapshot.val()
-      
-      //let updatedTemp = temp.push("testttttt")
-      console.log(updatedTemp)
-      //testArray.set(updatedTemp)
-    }, (errorObject) => {
-      console.log('The read failed: ' + errorObject.name);
-    }); 
-
-   
+    //let postID = postRef.key
+    postRef.set(req.body.value)
 
     res.status(200).send("success")
   } else {
@@ -83,6 +70,19 @@ router.get('/getSong', function (req, res, next) {
       //handle error
     });
 
+})
+.get('/getSets', function(req, res, next) {
+  let testArray = db.ref('users/' + req.body.userUID + '/posts')
+
+    testArray.once("value", function (snapshot) {
+      var list = [];
+      snapshot.forEach(function (elem) {
+        list.push(elem.val());
+      });
+      console.log(list)
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
 })
 
 router.get('/getSet', function (req, res, next) {
