@@ -72,14 +72,18 @@ router.get('/getSong', function (req, res, next) {
 
 })
 .get('/getSets', function(req, res, next) {
-  let testArray = db.ref('users/' + req.body.userUID + '/posts')
+  res.header('Access-Control-Allow-Origin', '*');
+  //console.log(req.query.userUID)
+  let testArray = db.ref('users/' + req.query.userUID + '/posts')
 
     testArray.once("value", function (snapshot) {
       var list = [];
       snapshot.forEach(function (elem) {
+        console.log(elem.val())
         list.push(elem.val());
       });
       console.log(list)
+      res.send(list)
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
