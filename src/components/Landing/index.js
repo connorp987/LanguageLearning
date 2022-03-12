@@ -53,7 +53,7 @@ class Landing extends Component {
             {this.state.sets.map(data => {
               return (
                 <Col>
-                <Link style={{ color: 'black', textDecoration: 'none' }} to={"/set/" + data.id}>
+                <Link style={{ color: 'black', textDecoration: 'none' }} to={`/set/${data.id}`}>
                   <Card>
                     <Card.Img variant="top" src="https://images.unsplash.com/photo-1643579471528-c4df37329804?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" />
                     <Card.Body>

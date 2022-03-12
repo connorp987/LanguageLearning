@@ -7,23 +7,6 @@ import axios from 'axios'
 
 export default function Create() {
 
-  const onFinish = values => {
-    console.log('Received values of form:', values);
-  };
-
-  function createSet() {
-    axios.post('http://localhost:4000/createNewSet', {
-      headers: { "Access-Control-Allow-Origin": "*" },
-      userUID: firebase.auth().currentUser.uid
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
 
   const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
     const [form] = Form.useForm();
@@ -122,7 +105,6 @@ export default function Create() {
 
   return (
     <div>
-      <Button onClick={() => createSet()} >Click me</Button>
       <div style={{ margin: '20%' }}>
         <CollectionsPage />
       </div>

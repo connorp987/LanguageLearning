@@ -32,7 +32,9 @@ router.post('/createNewSet', function (req, res, next) {
   if (req.body.userUID) {
     let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
     //let postID = postRef.key
-    postRef.set(req.body.value)
+    let temp = req.body.value
+    temp['id'] = postRef.key
+    postRef.set(temp)
 
     res.status(200).send("success")
   } else {
@@ -88,27 +90,21 @@ router.get('/getSong', function (req, res, next) {
       console.log("The read failed: " + errorObject.code);
     });
 })
+.get('/getSet', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  //console.log(req.query.userUID)
+  let testArray = db.ref('users/' + req.query.userUID + '/posts/' + req.query.firebaseId)
 
-router.get('/getSet', function (req, res, next) {
-  if (req.headers.authtoken) {
-    admin.auth().verifyIdToken(req.headers.authtoken)
-      .then(() => {
-        var database = admin.database()
-        var uid = req.query.uid
-        db.ref('/users/' + uid).once('value')
-          .then(function (snapshot) {
-            var data = snapshot.val() ? snapshot.val() : []
-            res.status(200).send({ our_data: data })
-          }).catch(function (error) {
-            res.status(500).json({ error: error })
-          })
-      }).catch(() => {
-        res.status(403).send('Unauthorized')
-      })
-  } else {
-    res.status(403).send('Unauthorized')
-  }
+    testArray.on("value", function (snapshot) {
+      console.log(snapshot.val())
+      
+      res.status(200).send(snapshot.val())
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
 })
+
+
 
 module.exports = router;
 

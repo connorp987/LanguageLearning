@@ -1,100 +1,48 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
+import { useLocation, Link } from "react-router-dom";
 import { FlashcardArray } from "react-quizlet-flashcard";
 import { Table, Input, Button } from 'antd';
 import { withAuthorization } from '../Session';
+import axios from 'axios'
 
-const columns = [
-  {
-    title: 'Front',
-    dataIndex: 'front',
-    key: 'front',
-    //render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Back',
-    dataIndex: 'back',
-    key: 'back',
-  }
-];
-
-
-function Sets({ match }) {
-  const id = match.params.id;
-  const [tempStringOne, setTempStringOne] = useState('')
-  const [tempStringTwo, setTempStringTwo] = useState('')
-  const [cards, setCards] = useState([{
-    id: 1,
-    front: "What is the capital of <u>Alaska</u>?",
-    back: "Juneau",
-    frontChild: <div>Hello there</div>,
-    backChild: <p>This is a back child</p>
-  },
-  {
-    id: 2,
-    front: "What is the capital of California?",
-    back: "Sacramento",
-  },
-  {
-    id: 3,
-    front: "What is the capital of New York?",
-    back: "Albany",
-  },
-  {
-    id: 4,
-    front: "What is the capital of Florida?",
-    back: "Tallahassee",
-  },
-  {
-    id: 5,
-    front: "What is the capital of Texas?",
-    back: "Austin",
-  },
-  {
-    id: 6,
-    front: "What is the capital of New Mexico?",
-    back: "Santa Fe",
-  },
-  {
-    id: 7,
-    front: "What is the capital of Arizona?",
-    back: "Phoenix",
-  }])
-
-  function handleChange(e) {
-    if (e.target.dataset.key == "firstBox") {
-      setTempStringOne(e.target.value)
-    }
-    if (e.target.dataset.key == "secondBox") {
-      setTempStringTwo(e.target.value)
-    }
+class Sets extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cardData: {},
+      pageID: this.props.match.params.id
+    };
   }
 
-  function handleKeyDown(e) {
-    if (e.key === 'Tab') {
-      if (e.target.dataset.key == "firstBox") {
-        setTempStringOne(e.target.value)
+  componentDidMount() {
+    axios.get('http://localhost:4000/getSet', {
+      crossdomain: true,
+      //headers: { "Access-Control-Allow-Origin": "*" },
+      params: {
+        userUID: this.props.firebase.auth.currentUser.uid,
+        firebaseId: this.state.pageID
       }
-      if (e.target.dataset.key == "secondBox") {
-        setTempStringTwo(e.target.value)
-      }
-      console.log(tempStringOne, tempStringTwo)
-      if (tempStringOne != '' && tempStringTwo != '') {
-        setCards(cards => [...cards, {
-          id: cards.length + 1,
-          front: tempStringOne,
-          back: tempStringTwo
-        }]);
-
-      }
-
-      console.log('do validate', cards);
-      console.log(e.target.value);
-    }
+    })
+      .then((response) => {
+        console.log(response.data)
+        this.setState({ cardData: response.data })
+      })
+    //}
   }
+  render() {
 
-  return (
-    <div>
-      <div style={{ marginLeft: '30%' }}>
+    return (
+      <div>test</div>
+    )
+  }
+}
+
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Sets);
+
+/*
+<div style={{ marginLeft: '30%' }}>
         <FlashcardArray cards={cards} />
       </div>
 
@@ -114,11 +62,4 @@ function Sets({ match }) {
         }
         } >Add new word</Button>
       </div>
-
-    </div>
-  )
-}
-
-const condition = authUser => !!authUser;
-
-export default withAuthorization(condition)(Sets);
+*/
