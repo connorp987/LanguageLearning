@@ -69,16 +69,16 @@ export default function Create() {
     const onCreate = (values) => {
       console.log('Received values of form: ', values);
       axios.post('http://localhost:4000/createNewSet', {
-      headers: { "Access-Control-Allow-Origin": "*" },
-      userUID: firebase.auth().currentUser.uid,
-      value: values
-    })
-      .then(function (response) {
-        console.log(response);
+        headers: { "Access-Control-Allow-Origin": "*" },
+        userUID: firebase.auth().currentUser.uid,
+        value: values
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
       setVisible(false);
     };
 

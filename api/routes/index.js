@@ -41,6 +41,22 @@ router.post('/createNewSet', function (req, res, next) {
     res.status(403).send('Unauthorized')
   }
 })
+  .post('/addNewCard', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    if (req.body.userUID) {
+      let postRef = db.ref('users/' + req.body.userUID + '/posts/' + req.body.firebaseId)
+      
+      postRef.update(req.body.cardData, (error)=> {
+        if (error) {
+          res.status(403).send('bad')
+        } else {
+          res.status(200).send('success')
+        }
+      })
+    } else {
+      res.status(403).send('Unauthorized')
+    }
+  })
 
 
 /* GET home page. */
@@ -73,10 +89,10 @@ router.get('/getSong', function (req, res, next) {
     });
 
 })
-.get('/getSets', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  //console.log(req.query.userUID)
-  let testArray = db.ref('users/' + req.query.userUID + '/posts')
+  .get('/getSets', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    //console.log(req.query.userUID)
+    let testArray = db.ref('users/' + req.query.userUID + '/posts')
 
     testArray.once("value", function (snapshot) {
       var list = [];
@@ -89,20 +105,20 @@ router.get('/getSong', function (req, res, next) {
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
-})
-.get('/getSet', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  //console.log(req.query.userUID)
-  let testArray = db.ref('users/' + req.query.userUID + '/posts/' + req.query.firebaseId)
+  })
+  .get('/getSet', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    //console.log(req.query.userUID)
+    let testArray = db.ref('users/' + req.query.userUID + '/posts/' + req.query.firebaseId)
 
     testArray.on("value", function (snapshot) {
       console.log(snapshot.val())
-      
+
       res.status(200).send(snapshot.val())
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
-})
+  })
 
 
 
