@@ -9,7 +9,6 @@ import * as ROUTES from '../../constants/routes';
 
 const RealLanding = () => (
   <div>
-    <h1>SignIn</h1>
     <LandingPage />
   </div>
 );
@@ -22,12 +21,9 @@ class Landing extends Component {
   }
 
   componentDidMount() {
-    //console.log(this.props.firebase.auth.currentUser.uid)
 
-    //if (this.state.sets.size == 0) {
     axios.get('http://localhost:4000/getSets', {
       crossdomain: true,
-      //headers: { "Access-Control-Allow-Origin": "*" },
       params: {
         userUID: this.props.firebase.auth.currentUser.uid
       }
@@ -36,15 +32,9 @@ class Landing extends Component {
         console.log(response.data)
         this.setState({ sets: response.data })
       })
-    //}
-
-
   }
 
-//TODO: next i need to edit the sets page so that the firebase unique id is what each page is redirected by
-
   render() {
-    //console.log(this.state.sets)
     return (
       <div>
 
@@ -53,59 +43,34 @@ class Landing extends Component {
             {this.state.sets.map(data => {
               return (
                 <Col>
-                <Link style={{ color: 'black', textDecoration: 'none' }} to={`/set/${data.id}`}>
-                  <Card>
-                    <Card.Img variant="top" src="https://images.unsplash.com/photo-1643579471528-c4df37329804?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" />
-                    <Card.Body>
-                      <Card.Title>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} to={`/set/${data.id}`}>
+                    <Card>
+                      <Card.Img variant="top" src="https://images.unsplash.com/photo-1643579471528-c4df37329804?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" />
+                      <Card.Body>
+                        <Card.Title>
 
-                        {data.title}
+                          {data.title}
 
-                      </Card.Title>
-                      <Card.Text>
-                        {data.description}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>)
+                        </Card.Title>
+                        <Card.Text>
+                          {data.description}
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>)
             })}
           </Row>
         </div>
-        test
-
       </div >
     )
   }
 
 }
-/*
-{cards.map((data, idx) => (
-              <Col>
-                <Link style={{ color: 'black', textDecoration: 'none' }} to={"/set/" + data.id}>
-                  <Card>
-                    <Card.Img variant="top" src="https://images.unsplash.com/photo-1643579471528-c4df37329804?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" />
-                    <Card.Body>
-                      <Card.Title>
-
-                        {data.id}
-
-                      </Card.Title>
-                      <Card.Text>
-                        This is a longer card with supporting text below as a natural
-                        lead-in to additional content. This content is a little bit longer.
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))}
-*/
 
 const LandingPage = compose(withRouter, withFirebase)(Landing);
 
 const condition = authUser => !!authUser;
 export default withAuthorization(condition, ROUTES.LANDING)(RealLanding);
-
 
 export { RealLanding };
