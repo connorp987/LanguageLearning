@@ -6,7 +6,7 @@
 .pnp.js
 
 /api/node_modules
-./api/node_modules
+/api/routes/langmusikCloudAPI.json
 # testing
 /coverage
 

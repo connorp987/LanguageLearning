@@ -9,11 +9,20 @@ const fs = require('fs');
 const { JSDOM } = require("jsdom")
 const axios = require('axios')
 const { getDatabase } = require('firebase-admin/database');
-
+const { Translate } = require('@google-cloud/translate').v2;
 // Get a database reference to our blog
 
 
-const vgmUrl = 'https://genius.com/Jeremias-blaue-augen-lyrics';
+const vgmUrl = 'https://genius.com/Jeremias-schon-okay-lyrics';
+
+const projectId = 'crested-trilogy-344121';
+
+
+// Imports the Google Cloud client library
+
+
+// Instantiates a client
+const translate = new Translate({ projectId, keyFilename: './routes/langmusikCloudAPI.json' });
 
 var admin = require("firebase-admin");
 
@@ -54,7 +63,7 @@ router.post('/createNewSet', function (req, res, next) {
 
 /* GET home page. */
 router.get('/getSong', function (req, res, next) {
-
+  res.header("Access-Control-Allow-Origin", "*");
   let wikiUrls = []
   rp(vgmUrl)
     .then(function (html) {
@@ -74,8 +83,8 @@ router.get('/getSong', function (req, res, next) {
       //console.log($('td > b > a', html).length);
       //console.log($('td > b > a', html));
 
-      console.log(wikiUrls);
-      res.send(wikiUrls)
+      console.log(wikiUrls[0]);
+      res.send(wikiUrls[0])
     })
     .catch(function (err) {
       //handle error
@@ -109,6 +118,7 @@ router.get('/getSong', function (req, res, next) {
       console.log("The read failed: " + errorObject.code);
     });
   })
+  
 
 
 

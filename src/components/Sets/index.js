@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { FlashcardArray } from "react-quizlet-flashcard";
 import { Table, Input, Button } from 'antd';
 import { withAuthorization } from '../Session';
+import TextSelector from 'text-selection-react'
 import axios from 'axios'
 
 class Sets extends Component {
@@ -10,13 +11,15 @@ class Sets extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.addNewCard = this.addNewCard.bind(this)
+    this.handleMouseUp = this.handleMouseUp.bind(this)
 
     this.state = {
       cardData: {},
       pageID: this.props.match.params.id,
       tempStringOne: '',
       tempStringTwo: '',
-      cards: []
+      cards: [],
+      songText: []
     };
   }
 
@@ -39,6 +42,16 @@ class Sets extends Component {
           //not empty
 
         }
+      })
+
+    axios.get('http://localhost:4000/getSong', {
+      crossdomain: true,
+    })
+      .then((response) => {
+        //console.log(response.data[0])
+        let text = response.data[0].split('\n').map(str => <p>{str}</p>);
+        //console.log(text)
+        this.setState({ songText: text })
       })
     //}
   }
@@ -110,7 +123,13 @@ class Sets extends Component {
       });
 
   }
+
+  handleMouseUp() {
+    console.log(`Selected text: ${window.getSelection().toString()}`);
+  }
+
   render() {
+
 
     const columns = [
       {
@@ -127,6 +146,8 @@ class Sets extends Component {
     ];
     return (
       <div>
+        <div onMouseUp={this.handleMouseUp}><p>{this.state.songText}</p></div>
+        
         <div style={{ marginLeft: '30%' }}>
           <FlashcardArray cards={this.state.cards} />
         </div>
