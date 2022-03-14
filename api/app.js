@@ -33,7 +33,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.set({
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    //"Access-Control-Allow-Origin": "*",
   })
   // render the error page
   res.status(err.status || 500);

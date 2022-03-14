@@ -45,16 +45,9 @@ router.post('/createNewSet', function (req, res, next) {
     if (req.body.userUID) {
       res.header("Access-Control-Allow-Origin", "*");
       let postRef = db.ref('users/' + req.body.userUID + '/posts/' + req.body.firebaseId)
-      
-      postRef.update(req.body.cardData, (error)=> {
-        if (error) {
-          return res.status(403).send('bad')
-        } else {
-          return res.status(200).send('success')
-        }
-      })
-    } else {
-      res.end()
+
+      postRef.update(req.body.cardData)
+      return res.send('success')
     }
   })
 
@@ -106,14 +99,11 @@ router.get('/getSong', function (req, res, next) {
       console.log("The read failed: " + errorObject.code);
     });
   })
-  .get('/getSet', function (req, res, next) {
+  .get('/getSet', function (req, res) {
     res.header('Access-Control-Allow-Origin', '*');
-    //console.log(req.query.userUID)
     let testArray = db.ref('users/' + req.query.userUID + '/posts/' + req.query.firebaseId)
 
     testArray.on("value", function (snapshot) {
-      console.log(snapshot.val())
-
       return res.status(200).send(snapshot.val())
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
