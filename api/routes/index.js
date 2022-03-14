@@ -118,7 +118,18 @@ router.get('/getSong', function (req, res, next) {
       console.log("The read failed: " + errorObject.code);
     });
   })
-  
+  .get('/getTranslation', async function (req, res) {
+    const text = 'Hello, world!';
+
+    // The target language
+    const target = 'de';
+
+    // Translates some text into Russian
+    const [translation] = await translate.translate(text, target);
+    console.log(`Text: ${text}`);
+    console.log(`Translation: ${translation}`);
+    res.status(200).send(translation)
+  })
 
 
 
