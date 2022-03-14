@@ -119,10 +119,10 @@ router.get('/getSong', function (req, res, next) {
     });
   })
   .get('/getTranslation', async function (req, res) {
-    const text = 'Hello, world!';
+    const text = 'Nimm, nimm, nimm von mir alles, was du brauchst';
 
     // The target language
-    const target = 'de';
+    const target = 'en';
 
     // Translates some text into Russian
     const [translation] = await translate.translate(text, target);

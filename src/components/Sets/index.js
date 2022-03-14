@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { FlashcardArray } from "react-quizlet-flashcard";
 import { Table, Input, Button } from 'antd';
 import { withAuthorization } from '../Session';
-import TextSelector from 'text-selection-react'
 import axios from 'axios'
 
 class Sets extends Component {
@@ -43,14 +42,15 @@ class Sets extends Component {
 
         }
       })
-
+    //todo: Need to save this to db so its not called every time. Also need to implement translation with /getsong.
+    // and only save that translation once to db, unless its updated.
     axios.get('http://localhost:4000/getSong', {
       crossdomain: true,
     })
       .then((response) => {
-        //console.log(response.data[0])
+        console.log(response.data[0])
         let text = response.data[0].split('\n').map(str => <p>{str}</p>);
-        //console.log(text)
+        console.log(text)
         this.setState({ songText: text })
       })
     //}
@@ -130,7 +130,6 @@ class Sets extends Component {
 
   render() {
 
-
     const columns = [
       {
         title: 'Front',
@@ -147,7 +146,7 @@ class Sets extends Component {
     return (
       <div>
         <div onMouseUp={this.handleMouseUp}><p>{this.state.songText}</p></div>
-        
+
         <div style={{ marginLeft: '30%' }}>
           <FlashcardArray cards={this.state.cards} />
         </div>
@@ -170,26 +169,3 @@ class Sets extends Component {
 const condition = authUser => !!authUser;
 
 export default withAuthorization(condition)(Sets);
-
-/*
-<div style={{ marginLeft: '30%' }}>
-        <FlashcardArray cards={cards} />
-      </div>
-
-      {cards[id - 1].front}
-      <Table pagination={false} columns={columns} dataSource={cards} />
-
-      <div style={{ marginLeft: "25%" }}>
-        <label>Enter a new term:</label>
-        <Input data-key="firstBox" style={{ width: "8%" }} type="text" onChange={handleChange} onKeyDown={handleKeyDown} />
-        <Input data-key="secondBox" style={{ width: "8%" }} type="text" onChange={handleChange} onKeyDown={handleKeyDown} />
-        <Button onClick={() => {
-          setCards(cards => [...cards, {
-            id: cards.length + 1,
-            front: tempStringOne,
-            back: tempStringTwo
-          }])
-        }
-        } >Add new word</Button>
-      </div>
-*/
