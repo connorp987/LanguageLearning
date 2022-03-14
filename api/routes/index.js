@@ -42,19 +42,19 @@ router.post('/createNewSet', function (req, res, next) {
   }
 })
   .post('/addNewCard', function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
     if (req.body.userUID) {
+      res.header("Access-Control-Allow-Origin", "*");
       let postRef = db.ref('users/' + req.body.userUID + '/posts/' + req.body.firebaseId)
       
       postRef.update(req.body.cardData, (error)=> {
         if (error) {
-          res.status(403).send('bad')
+          return res.status(403).send('bad')
         } else {
-          res.status(200).send('success')
+          return res.status(200).send('success')
         }
       })
     } else {
-      res.status(403).send('Unauthorized')
+      res.end()
     }
   })
 
@@ -114,7 +114,7 @@ router.get('/getSong', function (req, res, next) {
     testArray.on("value", function (snapshot) {
       console.log(snapshot.val())
 
-      res.status(200).send(snapshot.val())
+      return res.status(200).send(snapshot.val())
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
