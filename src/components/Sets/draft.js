@@ -1,0 +1,174 @@
+import React from "react";
+
+import { FormatBold } from "@styled-icons/material/FormatBold";
+import { FormatItalic } from "@styled-icons/material/FormatItalic";
+import { FormatUnderlined } from "@styled-icons/material/FormatUnderlined";
+
+import {
+  Editor,
+  EditorState,
+  getVisibleSelectionRect,
+  RichUtils,
+  ContentState
+} from "draft-js";
+
+import { useToggleLayer } from "react-laag";
+
+function Style({ Icon, selected, onClick, style }) {
+  return (
+    <div
+      onClick={onClick}
+      style={{
+        cursor: "pointer",
+        padding: 6,
+        backgroundColor: selected ? "rgba(255,255,255, 0.15)" : "transparent",
+        borderRadius: 3,
+        ...style
+      }}
+    >
+      <div>test</div>
+    </div>
+  );
+}
+
+export default function Draft(props) {
+  const [editorState, setEditorState] = React.useState(
+      EditorState.createWithContent(
+        ContentState.createFromText(props.song)
+      )
+  );
+  
+
+  const editor = React.useRef(null);
+
+  const [element, toggleLayerProps] = useToggleLayer(
+    ({ isOpen, layerProps }) =>
+      isOpen && (
+        <div
+          ref={layerProps.ref}
+          style={{
+            ...layerProps.style,
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            borderRadius: 4,
+            color: "white",
+            display: "flex",
+            padding: 4
+          }}
+          onMouseDown={evt => evt.preventDefault()}
+        >
+          <Style
+            Icon={FormatBold}
+            onClick={() => {
+              setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+            }}
+            selected={editorState.getCurrentInlineStyle().has("BOLD")}
+          />
+          <Style
+            Icon={FormatItalic}
+            style={{ marginLeft: 2 }}
+            onClick={() => {
+              setEditorState(
+                RichUtils.toggleInlineStyle(editorState, "ITALIC")
+              );
+            }}
+            selected={editorState.getCurrentInlineStyle().has("ITALIC")}
+          />
+          <Style
+            Icon={FormatUnderlined}
+            style={{ marginLeft: 2 }}
+            onClick={() => {
+              setEditorState(
+                RichUtils.toggleInlineStyle(editorState, "UNDERLINE")
+              );
+            }}
+            selected={editorState.getCurrentInlineStyle().has("UNDERLINE")}
+          />
+        </div>
+      ),
+    { placement: { triggerOffset: 4 } }
+  );
+
+  const getCurrentTextSelection = editorState => {
+    const selectionState = editorState.getSelection();
+    const anchorKey = selectionState.getAnchorKey();
+    const currentContent = editorState.getCurrentContent();
+    const currentContentBlock = currentContent.getBlockForKey(anchorKey);
+    const start = selectionState.getStartOffset();
+    const end = selectionState.getEndOffset();
+    const selectedText = currentContentBlock.getText().slice(start, end);
+  
+    return selectedText;
+  };
+  
+  function focusEditor() {
+    editor.current.focus();
+  }
+
+  React.useEffect(() => {
+    focusEditor();
+  }, []);
+
+  React.useEffect(() => {
+    console.log(props.song)
+    setEditorState(EditorState.createWithContent(
+      ContentState.createFromText(props.song)
+    ))
+      
+  }, [props.song])
+
+  React.useEffect(() => {
+    const isCollapsed = editorState.getSelection().isCollapsed();
+
+    if (!editorState.getSelection().getHasFocus()) {
+      toggleLayerProps.close();
+      return;
+    }
+
+    if (isCollapsed) {
+      toggleLayerProps.close();
+    } else {
+      toggleLayerProps.open({
+        clientRect: () => getVisibleSelectionRect(window),
+        target: document.body
+      });
+    }
+  }, [
+    editorState.getSelection().isCollapsed(),
+    editorState.getSelection().getHasFocus()
+  ]);
+
+  return (
+    <>
+      <h1 style={{ margin: "auto", maxWidth: 500 }}>
+        Select text to edit the inline-styles
+      </h1>
+      <div
+        onClick={focusEditor}
+        style={{
+          maxWidth: 500,
+          margin: "16px auto",
+          minHeight: 300,
+          backgroundColor: "white",
+          padding: 12
+        }}
+      >
+        {element}
+        <Editor
+          ref={editor}
+          editorState={editorState}
+          onChange={editorState => setEditorState(editorState)}
+          handleKeyCommand={(command, editorState) => {
+            const newState = RichUtils.handleKeyCommand(editorState, command);
+            if (newState) {
+              setEditorState(newState);
+              return "handled";
+            }
+            return "not-handled";
+          }}
+        />
+
+        <p>{getCurrentTextSelection(editorState)}</p>
+      </div>
+    </>
+  );
+}

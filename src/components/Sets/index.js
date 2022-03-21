@@ -3,6 +3,7 @@ import { FlashcardArray } from "react-quizlet-flashcard";
 import { Table, Input, Button } from 'antd';
 import { withAuthorization } from '../Session';
 import axios from 'axios'
+import Draft from './draft'
 
 class Sets extends Component {
   constructor(props) {
@@ -18,7 +19,8 @@ class Sets extends Component {
       tempStringOne: '',
       tempStringTwo: '',
       cards: [],
-      songText: []
+      songText: [],
+      songString: ''
     };
   }
 
@@ -49,9 +51,11 @@ class Sets extends Component {
     })
       .then((response) => {
         console.log(response.data[0])
+        
         let text = response.data[0].split('\n').map(str => <p>{str}</p>);
         console.log(text)
-        this.setState({ songText: text })
+       
+        this.setState({ songText: text, songString: response.data[0] })
       })
     //}
   }
@@ -145,6 +149,7 @@ class Sets extends Component {
     ];
     return (
       <div>
+        <Draft song={this.state.songString} />
         <div onMouseUp={this.handleMouseUp}><p>{this.state.songText}</p></div>
 
         <div style={{ marginLeft: '30%' }}>
