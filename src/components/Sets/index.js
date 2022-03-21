@@ -6,12 +6,14 @@ import axios from 'axios'
 import Draft from './draft'
 
 class Sets extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.addNewCard = this.addNewCard.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.addDraftCard = this.addDraftCard.bind(this)
 
     this.state = {
       cardData: {},
@@ -25,6 +27,8 @@ class Sets extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     axios.get('http://localhost:4000/getSet', {
       crossdomain: true,
       //headers: { "Access-Control-Allow-Origin": "*" },
@@ -35,7 +39,9 @@ class Sets extends Component {
     })
       .then((response) => {
         console.log(response.data)
-        this.setState({ cardData: response.data, cards: response.data.cards })
+        if (this._isMounted) {
+          this.setState({ cardData: response.data, cards: response.data.cards })
+        }
         if (!this.state.cards.length) {
           //empty
           console.log('test')
@@ -51,10 +57,10 @@ class Sets extends Component {
     })
       .then((response) => {
         console.log(response.data[0])
-        
+
         let text = response.data[0].split('\n').map(str => <p>{str}</p>);
         console.log(text)
-       
+
         this.setState({ songText: text, songString: response.data[0] })
       })
     //}
@@ -112,20 +118,24 @@ class Sets extends Component {
     }
 
     this.setState(tempCard)
+    /*
+        axios.post('http://localhost:4000/addNewCard', {
+          //headers: { "Access-Control-Allow-Origin": "*" },
+          userUID: this.props.firebase.auth.currentUser.uid,
+          firebaseId: this.state.pageID,
+          cardData: tempCard
+        })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    */
+  }
 
-    axios.post('http://localhost:4000/addNewCard', {
-      //headers: { "Access-Control-Allow-Origin": "*" },
-      userUID: this.props.firebase.auth.currentUser.uid,
-      firebaseId: this.state.pageID,
-      cardData: tempCard
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
+  addDraftCard(selectedText) {
+    console.log(selectedText)
   }
 
   handleMouseUp() {
@@ -149,11 +159,11 @@ class Sets extends Component {
     ];
     return (
       <div>
-        <Draft song={this.state.songString} />
-        <div onMouseUp={this.handleMouseUp}><p>{this.state.songText}</p></div>
+        <Draft addCard={this.addDraftCard} song={this.state.songString} />
+
 
         <div style={{ marginLeft: '30%' }}>
-          <FlashcardArray cards={this.state.cards} />
+
         </div>
 
 
@@ -170,6 +180,7 @@ class Sets extends Component {
     )
   }
 }
+//<div onMouseUp={this.handleMouseUp}><p>{this.state.songText}</p></div>
 
 const condition = authUser => !!authUser;
 

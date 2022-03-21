@@ -59,6 +59,7 @@ export default function Draft(props) {
           <Style
             Icon={FormatBold}
             onClick={() => {
+              props.addCard(getCurrentTextSelection(editorState))
               setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
             }}
             selected={editorState.getCurrentInlineStyle().has("BOLD")}
@@ -105,11 +106,16 @@ export default function Draft(props) {
   }
 
   React.useEffect(() => {
-    focusEditor();
+    let isMounted = true; 
+    if (isMounted) {
+      focusEditor();
+    }
+
+    return () => { isMounted = false };
   }, []);
 
   React.useEffect(() => {
-    console.log(props.song)
+    //console.log(props.song)
     setEditorState(EditorState.createWithContent(
       ContentState.createFromText(props.song)
     ))
