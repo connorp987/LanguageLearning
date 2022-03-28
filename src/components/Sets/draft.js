@@ -146,7 +146,7 @@ export default function Draft(props) {
   return (
     <>
       <h1 style={{ margin: "auto", maxWidth: 500 }}>
-        Select text to edit the inline-styles
+        schon okay Lyrics
       </h1>
       <div
         onClick={focusEditor}

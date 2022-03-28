@@ -5,7 +5,7 @@ import firebase from 'firebase/compat/app'
 import axios from 'axios'
 
 
-export default function Create() {
+export default function Create(props) {
 
 
   const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
@@ -75,6 +75,7 @@ export default function Create() {
       })
         .then(function (response) {
           console.log(response);
+          props.history.push("/")
         })
         .catch(function (error) {
           console.log(error);
