@@ -106,32 +106,47 @@ class Sets extends Component {
   }
 
   addNewCard() {
-    let tempCard = {
-      cards: [
-        ...this.state.cards,
-        {
-          id: this.state.cards.length + 1,
-          front: this.state.tempStringOne,
-          back: this.state.tempStringTwo
-        }
-      ]
+    console.log(this.state.cardData)
+    let tempCard
+    if (this.state.cards === undefined) {
+      tempCard = {
+        cards: [
+          {
+            id: 1,
+            front: this.state.tempStringOne,
+            back: this.state.tempStringTwo
+          }
+        ]
+      }
+    } else {
+      tempCard = {
+        cards: [
+          ...this.state.cards,
+          {
+            id: this.state.cards.length + 1,
+            front: this.state.tempStringOne,
+            back: this.state.tempStringTwo
+          }
+        ]
+      }
     }
 
+
     this.setState(tempCard)
-    /*
-        axios.post('http://localhost:4000/addNewCard', {
-          //headers: { "Access-Control-Allow-Origin": "*" },
-          userUID: this.props.firebase.auth.currentUser.uid,
-          firebaseId: this.state.pageID,
-          cardData: tempCard
-        })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    */
+
+    axios.post('http://localhost:4000/addNewCard', {
+      headers: { "Access-Control-Allow-Origin": "*" },
+      userUID: this.props.firebase.auth.currentUser.uid,
+      firebaseId: this.state.pageID,
+      cardData: tempCard
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
   }
 
   addDraftCard(selectedText) {

@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 
-app.options('*', cors())
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +35,7 @@ app.use(function(err, req, res, next) {
     "Content-Type": "application/json",
     //"Access-Control-Allow-Origin": "*",
   })
+  //res.header("Access-Control-Allow-Origin", "*");
   // render the error page
   res.status(err.status || 500);
   res.json({ error: err })

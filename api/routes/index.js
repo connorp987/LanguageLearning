@@ -36,7 +36,7 @@ const db = getDatabase();
 //const ref = db.ref('users');
 
 router.post('/createNewSet', function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  //res.header("Access-Control-Allow-Origin", "*");
 
   if (req.body.userUID) {
     let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
@@ -52,10 +52,10 @@ router.post('/createNewSet', function (req, res, next) {
 })
   .post('/addNewCard', function (req, res) {
     if (req.body.userUID) {
-      res.header("Access-Control-Allow-Origin", "*");
-      let postRef = db.ref('users/' + req.body.userUID + '/posts/' + req.body.firebaseId)
+      let postRef = db.ref('users/' + req.body.userUID + '/posts/')
 
-      postRef.update(req.body.cardData)
+      postRef.child(req.body.firebaseId).update(req.body.cardData)
+
       return res.send('success')
     }
   })
@@ -63,7 +63,7 @@ router.post('/createNewSet', function (req, res, next) {
 
 /* GET home page. */
 router.get('/getSong', function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  //res.header("Access-Control-Allow-Origin", "*");
   let wikiUrls = []
   rp(vgmUrl)
     .then(function (html) {
@@ -92,7 +92,7 @@ router.get('/getSong', function (req, res, next) {
 
 })
   .get('/getSets', function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
+    //res.header('Access-Control-Allow-Origin', '*');
     //console.log(req.query.userUID)
     let testArray = db.ref('users/' + req.query.userUID + '/posts')
 
@@ -112,7 +112,7 @@ router.get('/getSong', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     let testArray = db.ref('users/' + req.query.userUID + '/posts/' + req.query.firebaseId)
 
-    testArray.on("value", function (snapshot) {
+    testArray.once("value", function (snapshot) {
       return res.status(200).send(snapshot.val())
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
