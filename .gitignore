@@ -7,6 +7,7 @@
 
 /api/node_modules
 /api/routes/langmusikCloudAPI.json
+/api/serviceAccount.json
 # testing
 /coverage
 
