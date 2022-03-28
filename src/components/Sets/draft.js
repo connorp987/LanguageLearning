@@ -33,11 +33,11 @@ function Style({ Icon, selected, onClick, style }) {
 
 export default function Draft(props) {
   const [editorState, setEditorState] = React.useState(
-      EditorState.createWithContent(
-        ContentState.createFromText(props.song)
-      )
+    EditorState.createWithContent(
+      ContentState.createFromText(props.song)
+    )
   );
-  
+
 
   const editor = React.useRef(null);
 
@@ -97,16 +97,16 @@ export default function Draft(props) {
     const start = selectionState.getStartOffset();
     const end = selectionState.getEndOffset();
     const selectedText = currentContentBlock.getText().slice(start, end);
-  
+
     return selectedText;
   };
-  
+
   function focusEditor() {
     editor.current.focus();
   }
 
   React.useEffect(() => {
-    let isMounted = true; 
+    let isMounted = true;
     if (isMounted) {
       focusEditor();
     }
@@ -119,7 +119,7 @@ export default function Draft(props) {
     setEditorState(EditorState.createWithContent(
       ContentState.createFromText(props.song)
     ))
-      
+
   }, [props.song])
 
   React.useEffect(() => {

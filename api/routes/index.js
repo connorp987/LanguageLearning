@@ -33,18 +33,14 @@ admin.initializeApp({
   databaseURL: "https://langmusik-b09c6-default-rtdb.firebaseio.com"
 });
 const db = getDatabase();
-//const ref = db.ref('users');
 
 router.post('/createNewSet', function (req, res, next) {
-  //res.header("Access-Control-Allow-Origin", "*");
-
   if (req.body.userUID) {
     let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
     //let postID = postRef.key
     let temp = req.body.value
     temp['id'] = postRef.key
     postRef.set(temp)
-
     res.status(200).send("success")
   } else {
     res.status(403).send('Unauthorized')
@@ -53,24 +49,17 @@ router.post('/createNewSet', function (req, res, next) {
   .post('/addNewCard', function (req, res) {
     if (req.body.userUID) {
       let postRef = db.ref('users/' + req.body.userUID + '/posts/')
-
       postRef.child(req.body.firebaseId).update(req.body.cardData)
-
       return res.send('success')
     }
   })
 
-
-/* GET home page. */
 router.get('/getSong', function (req, res, next) {
-  //res.header("Access-Control-Allow-Origin", "*");
   let wikiUrls = []
   rp(vgmUrl)
     .then(function (html) {
       const $ = cheerio.load(html);
-      //console.log(html)
-      //success!
-
+      
       //Need to find some way to add a more specific search for the music
       wikiUrls.push($('#lyrics-root', html).map(function (i, el) {
         // this === el
@@ -92,8 +81,6 @@ router.get('/getSong', function (req, res, next) {
 
 })
   .get('/getSets', function (req, res, next) {
-    //res.header('Access-Control-Allow-Origin', '*');
-    //console.log(req.query.userUID)
     let testArray = db.ref('users/' + req.query.userUID + '/posts')
 
     testArray.once("value", function (snapshot) {
@@ -124,14 +111,12 @@ router.get('/getSong', function (req, res, next) {
     // The target language
     const target = 'en';
 
-    // Translates some text into Russian
+    // Translates some text into English
     const [translation] = await translate.translate(text, target);
     console.log(`Text: ${text}`);
     console.log(`Translation: ${translation}`);
     res.status(200).send(translation)
   })
-
-
 
 module.exports = router;
 

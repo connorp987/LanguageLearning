@@ -31,7 +31,6 @@ class Sets extends Component {
 
     axios.get('http://localhost:4000/getSet', {
       crossdomain: true,
-      //headers: { "Access-Control-Allow-Origin": "*" },
       params: {
         userUID: this.props.firebase.auth.currentUser.uid,
         firebaseId: this.state.pageID
@@ -42,16 +41,8 @@ class Sets extends Component {
         if (this._isMounted) {
           this.setState({ cardData: response.data, cards: response.data.cards })
         }
-        if (!this.state.cards.length) {
-          //empty
-          console.log('test')
-        } else {
-          //not empty
-
-        }
       })
-    //todo: Need to save this to db so its not called every time. Also need to implement translation with /getsong.
-    // and only save that translation once to db, unless its updated.
+
     axios.get('http://localhost:4000/getSong', {
       crossdomain: true,
     })
@@ -63,7 +54,6 @@ class Sets extends Component {
 
         this.setState({ songText: text, songString: response.data[0] })
       })
-    //}
   }
 
   handleChange(e) {
@@ -84,7 +74,6 @@ class Sets extends Component {
         this.setState({ tempStringTwo: e.target.value })
       }
       if (this.state.tempStringOne !== '' && this.state.tempStringTwo !== '') {
-
         this.setState(cards => {
           return {
             cards: [
@@ -97,7 +86,6 @@ class Sets extends Component {
             ]
           }
         })
-
       }
 
       //console.log('do validate', this.state.cards);
@@ -131,7 +119,6 @@ class Sets extends Component {
       }
     }
 
-
     this.setState(tempCard)
 
     axios.post('http://localhost:4000/addNewCard', {
@@ -146,7 +133,6 @@ class Sets extends Component {
       .catch(function (error) {
         console.log(error);
       });
-
   }
 
   addDraftCard(selectedText) {
@@ -158,7 +144,6 @@ class Sets extends Component {
   }
 
   render() {
-
     const columns = [
       {
         title: 'Front',
@@ -176,11 +161,9 @@ class Sets extends Component {
       <div>
         <Draft addCard={this.addDraftCard} song={this.state.songString} />
 
-
         <div style={{ marginLeft: '30%' }}>
 
         </div>
-
 
         <Table pagination={false} columns={columns} dataSource={this.state.cards} />
 
@@ -190,12 +173,10 @@ class Sets extends Component {
           <Input data-key="secondBox" style={{ width: "8%" }} type="text" onChange={this.handleChange} onKeyDown={this.handleKeyDown} />
           <Button onClick={this.addNewCard} >Add new word</Button>
         </div>
-
       </div>
     )
   }
 }
-//<div onMouseUp={this.handleMouseUp}><p>{this.state.songText}</p></div>
 
 const condition = authUser => !!authUser;
 
