@@ -11,6 +11,7 @@ import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import CreatePage from '../Create'
 import Sets from '../Sets'
+import NewSet from '../Sets/NewSet'
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -34,6 +35,7 @@ const App = () => (
       <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route exact path={ROUTES.ADMIN} component={AdminPage} />
       <Route exact path={ROUTES.CREATE} component={CreatePage} />
+      <Route exact path='/NewSet' component={NewSet} />
       <Route path='/set/:id' component={Sets} />
     </div>
   </Router>
