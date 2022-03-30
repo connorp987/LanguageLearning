@@ -5,6 +5,7 @@ import TrackSearchResult from "./TrackSearchResult"
 import { Container, Form } from "react-bootstrap"
 import SpotifyWebApi from "spotify-web-api-node"
 import axios from "axios"
+import Draft from "./draft"
 
 const spotifyApi = new SpotifyWebApi({
   clientId: "cb541a417f8b4516990ae7f2aa994ec0",
@@ -73,6 +74,10 @@ export default function Dashboard({ code }) {
     return () => (cancel = true)
   }, [search, accessToken])
 
+  function addDraftCard(selectedText) {
+    console.log(selectedText)
+  }
+
   return (
     <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
       <Form.Control
@@ -91,7 +96,7 @@ export default function Dashboard({ code }) {
         ))}
         {searchResults.length === 0 && (
           <div className="text-center" style={{ whiteSpace: "pre" }}>
-            {lyrics}
+            <Draft addCard={addDraftCard} playingTrack={playingTrack} song={lyrics} />
           </div>
         )}
       </div>

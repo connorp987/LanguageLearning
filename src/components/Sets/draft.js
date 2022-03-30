@@ -146,7 +146,7 @@ export default function Draft(props) {
   return (
     <>
       <h1 style={{ margin: "auto", maxWidth: 500 }}>
-        schon okay Lyrics
+        {props.playingTrack? props.playingTrack.title : null}
       </h1>
       <div
         onClick={focusEditor}
