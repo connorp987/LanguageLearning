@@ -4,6 +4,8 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 const url = 'https://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States';
 const got = require("got")
+const lyricsFinder = require("lyrics-finder")
+const SpotifyWebApi = require("spotify-web-api-node")
 
 const fs = require('fs');
 const { JSDOM } = require("jsdom")
@@ -52,6 +54,49 @@ router.post('/createNewSet', function (req, res, next) {
       postRef.child(req.body.firebaseId).update(req.body.cardData)
       return res.send('success')
     }
+  })
+  .post("/refresh", (req, res) => {
+    const refreshToken = req.body.refreshToken
+    const spotifyApi = new SpotifyWebApi({
+      redirectUri: "http://localhost:3000/newset",
+      clientId: 'cb541a417f8b4516990ae7f2aa994ec0',
+      clientSecret: '2789f2d1599d4a308ad8bdb07a23cf38',
+      refreshToken,
+    })
+  
+    spotifyApi
+      .refreshAccessToken()
+      .then(data => {
+        res.json({
+          accessToken: data.body.accessToken,
+          expiresIn: data.body.expiresIn,
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        res.sendStatus(400)
+      })
+  })
+  .post("/login", (req, res) => {
+    const code = req.body.code
+    const spotifyApi = new SpotifyWebApi({
+      redirectUri: "http://localhost:3000/newset",
+      clientId: 'cb541a417f8b4516990ae7f2aa994ec0',
+      clientSecret: '2789f2d1599d4a308ad8bdb07a23cf38'
+    })
+  
+    spotifyApi
+      .authorizationCodeGrant(code)
+      .then(data => {
+        res.json({
+          accessToken: data.body.access_token,
+          refreshToken: data.body.refresh_token,
+          expiresIn: data.body.expires_in,
+        })
+      })
+      .catch(err => {
+        res.sendStatus(400)
+      })
   })
 
 router.get('/getSong', function (req, res, next) {
@@ -116,6 +161,11 @@ router.get('/getSong', function (req, res, next) {
     console.log(`Text: ${text}`);
     console.log(`Translation: ${translation}`);
     res.status(200).send(translation)
+  })
+  .get("/lyrics", async (req, res) => {
+    const lyrics =
+      (await lyricsFinder(req.query.artist, req.query.track)) || "No Lyrics Found"
+    res.json({ lyrics })
   })
 
 module.exports = router;
