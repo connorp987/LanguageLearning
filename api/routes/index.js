@@ -36,18 +36,19 @@ admin.initializeApp({
 });
 const db = getDatabase();
 
-router.post('/createNewSet', function (req, res, next) {
-  if (req.body.userUID) {
-    let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
-    //let postID = postRef.key
-    let temp = req.body.value
-    temp['id'] = postRef.key
-    postRef.set(temp)
-    res.status(200).send("success")
-  } else {
-    res.status(403).send('Unauthorized')
-  }
-})
+router
+  .post('/createNewSet', function (req, res, next) {
+    if (req.body.userUID) {
+      let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
+      //let postID = postRef.key
+      let temp = req.body.value
+      temp['id'] = postRef.key
+      postRef.set(temp)
+      res.status(200).send("success")
+    } else {
+      res.status(403).send('Unauthorized')
+    }
+  })
   .post('/addNewCard', function (req, res) {
     if (req.body.userUID) {
       let postRef = db.ref('users/' + req.body.userUID + '/posts/')
@@ -63,7 +64,7 @@ router.post('/createNewSet', function (req, res, next) {
       clientSecret: '2789f2d1599d4a308ad8bdb07a23cf38',
       refreshToken,
     })
-  
+
     spotifyApi
       .refreshAccessToken()
       .then(data => {
@@ -84,7 +85,7 @@ router.post('/createNewSet', function (req, res, next) {
       clientId: 'cb541a417f8b4516990ae7f2aa994ec0',
       clientSecret: '2789f2d1599d4a308ad8bdb07a23cf38'
     })
-  
+
     spotifyApi
       .authorizationCodeGrant(code)
       .then(data => {
@@ -99,32 +100,33 @@ router.post('/createNewSet', function (req, res, next) {
       })
   })
 
-router.get('/getSong', function (req, res, next) {
-  let wikiUrls = []
-  rp(vgmUrl)
-    .then(function (html) {
-      const $ = cheerio.load(html);
-      
-      //Need to find some way to add a more specific search for the music
-      wikiUrls.push($('#lyrics-root', html).map(function (i, el) {
-        // this === el
-        let str = $(this).html().replace(/<br\s*\/?>/gi, '\n');
+router
+  .get('/getSong', function (req, res, next) {
+    let wikiUrls = []
+    rp(vgmUrl)
+      .then(function (html) {
+        const $ = cheerio.load(html);
 
-        return $(str).text()
+        //Need to find some way to add a more specific search for the music
+        wikiUrls.push($('#lyrics-root', html).map(function (i, el) {
+          // this === el
+          let str = $(this).html().replace(/<br\s*\/?>/gi, '\n');
+
+          return $(str).text()
+        })
+          .toArray())
+
+        //console.log($('td > b > a', html).length);
+        //console.log($('td > b > a', html));
+
+        console.log(wikiUrls[0]);
+        res.send(wikiUrls[0])
       })
-        .toArray())
+      .catch(function (err) {
+        //handle error
+      });
 
-      //console.log($('td > b > a', html).length);
-      //console.log($('td > b > a', html));
-
-      console.log(wikiUrls[0]);
-      res.send(wikiUrls[0])
-    })
-    .catch(function (err) {
-      //handle error
-    });
-
-})
+  })
   .get('/getSets', function (req, res, next) {
     let testArray = db.ref('users/' + req.query.userUID + '/posts')
 
