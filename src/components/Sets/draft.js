@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import { FormatBold } from "@styled-icons/material/FormatBold";
 import { FormatItalic } from "@styled-icons/material/FormatItalic";
 import { FormatUnderlined } from "@styled-icons/material/FormatUnderlined";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import {
   Editor,
@@ -27,19 +27,17 @@ function Style({ Icon, selected, onClick, style }) {
         ...style
       }}
     >
-      <Icon />test
-      
+      Add a Card
     </div>
   );
 }
 
-export default function Draft(props, {selectedPhrases}) {
+export default function Draft(props) {
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(
       ContentState.createFromText(props.song)
     )
   );
-
 
   const editor = React.useRef(null);
 
@@ -128,7 +126,7 @@ export default function Draft(props, {selectedPhrases}) {
   return (
     <>
       <h1 style={{ margin: "auto", maxWidth: 500 }}>
-        {props.playingTrack? props.playingTrack.title : null}
+        {props.playingTrack ? props.playingTrack.title : null}
       </h1>
       <div
         onClick={focusEditor}
