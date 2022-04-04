@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import { FormatBold } from "@styled-icons/material/FormatBold";
 import { FormatItalic } from "@styled-icons/material/FormatItalic";
 import { FormatUnderlined } from "@styled-icons/material/FormatUnderlined";
+import {Link} from 'react-router-dom'
 
 import {
   Editor,
@@ -20,18 +21,19 @@ function Style({ Icon, selected, onClick, style }) {
       onClick={onClick}
       style={{
         cursor: "pointer",
-        padding: 6,
+        padding: 4,
         backgroundColor: selected ? "rgba(255,255,255, 0.15)" : "transparent",
-        borderRadius: 3,
+        borderRadius: 2,
         ...style
       }}
     >
-      <div>test</div>
+      <Icon />test
+      
     </div>
   );
 }
 
-export default function Draft(props) {
+export default function Draft(props, {selectedPhrases}) {
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(
       ContentState.createFromText(props.song)
@@ -57,30 +59,10 @@ export default function Draft(props) {
           onMouseDown={evt => evt.preventDefault()}
         >
           <Style
-            Icon={FormatBold}
-            onClick={() => {
-              props.addCard(getCurrentTextSelection(editorState))
-              setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
-            }}
-            selected={editorState.getCurrentInlineStyle().has("BOLD")}
-          />
-          <Style
-            Icon={FormatItalic}
-            style={{ marginLeft: 2 }}
-            onClick={() => {
-              setEditorState(
-                RichUtils.toggleInlineStyle(editorState, "ITALIC")
-              );
-            }}
-            selected={editorState.getCurrentInlineStyle().has("ITALIC")}
-          />
-          <Style
             Icon={FormatUnderlined}
             style={{ marginLeft: 2 }}
             onClick={() => {
-              setEditorState(
-                RichUtils.toggleInlineStyle(editorState, "UNDERLINE")
-              );
+              props.addPhrase(getCurrentTextSelection(editorState))
             }}
             selected={editorState.getCurrentInlineStyle().has("UNDERLINE")}
           />
@@ -173,7 +155,6 @@ export default function Draft(props) {
           }}
         />
 
-        <p>{getCurrentTextSelection(editorState)}</p>
       </div>
     </>
   );
