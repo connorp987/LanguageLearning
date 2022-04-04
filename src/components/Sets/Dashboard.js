@@ -94,7 +94,7 @@ export default function Dashboard({ code }) {
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
-      <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
+      <div className="flex-grow-1 my-2">
         {searchResults.map(track => (
           <TrackSearchResult
             track={track}
