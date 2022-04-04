@@ -109,18 +109,17 @@ export default function Dashboard({ code }) {
         )}
       </div>
 
-      <ListGroup className="d-flex align-items-center flex-grow-1 m-4" as="ol" numbered>
+      <ListGroup className="m-4" as="ol" numbered>
         {selectedPhrases.map((text, i) => {
           return <ListGroup.Item
             as="li"
             className="d-flex justify-content-between align-items-start"
-            style={{ width: '500px' }}
             key={text + i}
           >
-            <div className="text-left">
+            <div className="ms-2 me-auto">
               {text}
             </div>
-            <Button onClick={()=>{
+            <Button onClick={() => {
               remove(i)
             }}>Delete</Button>
           </ListGroup.Item>
