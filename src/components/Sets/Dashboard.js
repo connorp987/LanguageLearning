@@ -7,7 +7,7 @@ import SpotifyWebApi from "spotify-web-api-node"
 import axios from "axios"
 import Draft from "./draft"
 import { Steps, Button, message, Table, Input, Popconfirm, Space } from 'antd';
-import { TempCold } from "styled-icons/remix-fill"
+import { FlashcardArray } from "react-quizlet-flashcard";
 
 const { Step } = Steps;
 
@@ -31,14 +31,14 @@ export default function Dashboard({ code }) {
   const columns = [
     {
       title: 'Original Text',
-      dataIndex: 'original',
-      key: 'original',
+      dataIndex: 'front',
+      key: 'front',
       render: text => <a>{text}</a>,
     },
     {
       title: 'Translated Text',
-      dataIndex: 'translated',
-      key: 'translated',
+      dataIndex: 'back',
+      key: 'back',
     },
     {
       title: 'Action',
@@ -127,7 +127,7 @@ export default function Dashboard({ code }) {
     return () => (cancel = true)
   }, [search, accessToken])
 
-  useEffect(()=> {
+  useEffect(() => {
     if (current !== 1) return
     if (selectedPhrases.length === 0) return
     axios
@@ -143,13 +143,13 @@ export default function Dashboard({ code }) {
       })
   }, [current])
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!loading) return
     translatedText.map((temp, i) => {
       setData((datasData) => [...datasData, {
         key: `'${i}'`,
-        original: selectedPhrases[i],
-        translated: temp
+        front: selectedPhrases[i],
+        back: temp
       }])
     })
   }, [translatedText])
@@ -177,13 +177,21 @@ export default function Dashboard({ code }) {
     setCurrent(current - 1);
   }
 
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
   //todo: add a step 2. This step should actually translate selected cards from step one. Can add loading while translation service is running.
   return (
     <>
       <Steps style={{ width: '90%', marginLeft: '5%', marginRight: '5%' }} current={current} onChange={(current) => { setCurrent(current) }}>
         <Step title="Choose a Song" description="Search a song and add cards to be translated." />
         <Step title="View Translations" description="View and delete translations." />
-        <Step title="Step 3" description="This is a description." />
+        <Step title="Finalize" description="Create the title and description." />
       </Steps>
       <Container className="d-flex flex-column" style={{ height: "80vh" }}>
         {
@@ -233,11 +241,37 @@ export default function Dashboard({ code }) {
         {
           steps[current].title === "second" && (
             (loading) ? (<h1 className="m-4">Please select one or more phrases before coming to this step.</h1>) : (
-            <Row>
-              <Table columns={columns} dataSource={data} />
-            </Row>)
-          )}
+              <Row>
+                <Table columns={columns} dataSource={data} />
+              </Row>)
+          )
+        }
 
+        {
+          //todo: step 3 will be finalize step. Should be very similar to create. Choose a title and description.
+          steps[current].title === "last" && (
+            (data.length === 0 ? (<h1 className="m-4">Please go to translate phase before coming to this step.</h1>) : (
+              <Row>
+                <Form>
+                  <Form.Control
+                    type="search"
+                    placeholder="Search Songs/Artists"
+                    value={search}
+                    onChange={e => console.log(e.target.value)}
+                  />
+                  <Form.Control
+                    type="search"
+                    placeholder="Search Songs/Artists"
+                    value={search}
+                    onChange={e => console.log(e.target.value)}
+                  />
+                  <Button onSubmit={()=>{console.log('this submited')}} type="submit">Submit</Button>
+                </Form>
+
+              </Row>
+
+            )))
+        }
         <Row>
           <div className="steps-action">
             {current < steps.length - 1 && (

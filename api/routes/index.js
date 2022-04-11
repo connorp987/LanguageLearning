@@ -39,6 +39,7 @@ const db = getDatabase();
 router
   .post('/createNewSet', function (req, res, next) {
     if (req.body.userUID) {
+      //todo: will need to handle all the data from data in Dashboard component.
       let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
       //let postID = postRef.key
       let temp = req.body.value
