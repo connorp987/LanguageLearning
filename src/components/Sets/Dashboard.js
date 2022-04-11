@@ -137,15 +137,14 @@ export default function Dashboard({ code }) {
         },
       })
       .then(res => {
-        console.log(res)
         setTranslatedText(res.data)
         setLoading(false)
       })
   }, [current])
 
   useEffect(()=> {
+    if (!loading) return
     translatedText.map((temp, i) => {
-      console.log(temp, selectedPhrases[i])
       setData((datasData) => [...datasData, {
         key: `'${i}'`,
         original: selectedPhrases[i],
@@ -156,6 +155,8 @@ export default function Dashboard({ code }) {
 
   function addPhrase(selectedText) {
     setSelectedPhrases([...selectedPhrases, selectedText])
+    setLoading(true)
+    setData([])
     console.log(selectedText)
   }
 
@@ -234,7 +235,6 @@ export default function Dashboard({ code }) {
             <Row>
               <Table columns={columns} dataSource={data} />
             </Row>)
-            
           )}
 
         <Row>
