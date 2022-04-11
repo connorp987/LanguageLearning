@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import useAuth from "./useAuth"
 import Player from "./Player"
 import TrackSearchResult from "./TrackSearchResult"
-import { Container, Form, ListGroup } from "react-bootstrap"
+import { Container, Row, Form, ListGroup } from "react-bootstrap"
 import SpotifyWebApi from "spotify-web-api-node"
 import axios from "axios"
 import Draft from "./draft"
@@ -112,76 +112,82 @@ export default function Dashboard({ code }) {
     setCurrent(current - 1);
   }
 
+  //todo: add a step 2. This step should actually translate selected cards from step one. Can add loading while translation service is running.
   return (
     <>
-      <Steps type='navigation' current={current}>
-        {steps.map(item => (
-          <Step key={item.title} title={item.title} />
-        ))}
+      <Steps style={{width: '90%', marginLeft: '5%', marginRight: '5%'}} current={current} onChange={(current) => { setCurrent(current) }}>
+        <Step title="Choose a Song" description="Search a song and add cards to be translated." />
+        <Step title="Step 2" description="This is a description." />
+        <Step title="Step 3" description="This is a description." />
       </Steps>
-      {steps[current].title === "first" && (
-        <Container className="d-flex flex-column" style={{ height: "100vh" }}>
-          <Form.Control
-            type="search"
-            placeholder="Search Songs/Artists"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-          <div className="flex-grow-1 my-2">
-            {searchResults.map(track => (
-              <TrackSearchResult
-                track={track}
-                key={track.uri}
-                chooseTrack={chooseTrack}
-              />
-            ))}
-            {searchResults.length === 0 && (
-              <div className="text-center" style={{ whiteSpace: "pre" }}>
-                <Draft addPhrase={addPhrase} playingTrack={playingTrack} song={lyrics} />
-              </div>
+      <Container className="d-flex flex-column" style={{ height: "100vh" }}>
+        {steps[current].title === "first" && (
+          <Row className="d-flex m-4">
+            <Form.Control
+              type="search"
+              placeholder="Search Songs/Artists"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            <div className="flex-grow-1 my-2">
+              {searchResults.map(track => (
+                <TrackSearchResult
+                  track={track}
+                  key={track.uri}
+                  chooseTrack={chooseTrack}
+                />
+              ))}
+              {searchResults.length === 0 && (
+                <div className="text-center" style={{ whiteSpace: "pre" }}>
+                  <Draft addPhrase={addPhrase} playingTrack={playingTrack} song={lyrics} />
+                </div>
+              )}
+            </div>
+
+            <ListGroup className="m-4" as="ol" numbered>
+              {selectedPhrases.map((text, i) => {
+                return <ListGroup.Item
+                  as="li"
+                  className="d-flex justify-content-between align-items-start"
+                  key={text + i}
+                >
+                  <div className="ms-2 me-auto">
+                    {text}
+                  </div>
+                  <Button onClick={() => {
+                    remove(i)
+                  }}>Delete</Button>
+                </ListGroup.Item>
+
+              })}
+            </ListGroup>
+          </Row>
+        )}
+        <Row>
+          <div className="steps-action">
+            {current < steps.length - 1 && (
+              <Button type="primary" onClick={() => next()}>
+                Next
+              </Button>
+            )}
+            {current === steps.length - 1 && (
+              <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                Done
+              </Button>
+            )}
+            {current > 0 && (
+              <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                Previous
+              </Button>
             )}
           </div>
-
-          <ListGroup className="m-4" as="ol" numbered>
-            {selectedPhrases.map((text, i) => {
-              return <ListGroup.Item
-                as="li"
-                className="d-flex justify-content-between align-items-start"
-                key={text + i}
-              >
-                <div className="ms-2 me-auto">
-                  {text}
-                </div>
-                <Button onClick={() => {
-                  remove(i)
-                }}>Delete</Button>
-              </ListGroup.Item>
-
-            })}
-          </ListGroup>
+        </Row>
+        <Row className="flex-d m-4">
           <div>
             <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
           </div>
-        </Container>
-      )}
-      <div className="steps-content">{steps[current].content}</div>
-      <div className="steps-action">
-        {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
-            Next
-          </Button>
-        )}
-        {current === steps.length - 1 && (
-          <Button type="primary" onClick={() => message.success('Processing complete!')}>
-            Done
-          </Button>
-        )}
-        {current > 0 && (
-          <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-            Previous
-          </Button>
-        )}
-      </div>
+        </Row>
+      </Container>
     </>
   )
 }
