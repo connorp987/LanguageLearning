@@ -129,6 +129,7 @@ export default function Dashboard({ code }) {
 
   useEffect(()=> {
     if (current !== 1) return
+    if (selectedPhrases.length === 0) return
     axios
       .get("http://localhost:4000/getTranslation", {
         params: {
@@ -181,7 +182,7 @@ export default function Dashboard({ code }) {
     <>
       <Steps style={{ width: '90%', marginLeft: '5%', marginRight: '5%' }} current={current} onChange={(current) => { setCurrent(current) }}>
         <Step title="Choose a Song" description="Search a song and add cards to be translated." />
-        <Step title="Step 2" description="This is a description." />
+        <Step title="View Translations" description="View and delete translations." />
         <Step title="Step 3" description="This is a description." />
       </Steps>
       <Container className="d-flex flex-column" style={{ height: "80vh" }}>
@@ -231,7 +232,7 @@ export default function Dashboard({ code }) {
 
         {
           steps[current].title === "second" && (
-            (loading) ? (<div>loading</div>) : (
+            (loading) ? (<h1 className="m-4">Please select one or more phrases before coming to this step.</h1>) : (
             <Row>
               <Table columns={columns} dataSource={data} />
             </Row>)
