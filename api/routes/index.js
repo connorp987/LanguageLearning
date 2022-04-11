@@ -153,14 +153,12 @@ router
     });
   })
   .get('/getTranslation', async function (req, res) {
-    const text = 'Nimm, nimm, nimm von mir alles, was du brauchst';
-
     // The target language
-    const target = 'en';
+    //const target = 'en';
 
     // Translates some text into English
-    const [translation] = await translate.translate(text, target);
-    console.log(`Text: ${text}`);
+    const [translation] = await translate.translate(req.query.text, req.query.target);
+    console.log(`Text: ${req.query.text}`);
     console.log(`Translation: ${translation}`);
     res.status(200).send(translation)
   })
