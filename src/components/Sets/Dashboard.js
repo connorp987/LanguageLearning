@@ -45,7 +45,7 @@ export default function Dashboard({ code }) {
       key: 'action',
       render: (text, record) => (
         data.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+          <Popconfirm title="Sure to delete?" onConfirm={() => remove(record.key)}>
             <a>Delete</a>
           </Popconfirm>
         ) : null
@@ -162,6 +162,8 @@ export default function Dashboard({ code }) {
   }
 
   function remove(index) {
+    const dataSource = [...data];
+    setData(dataSource.filter((item) => item.key !== index))
     const temp = [...selectedPhrases]
     temp.splice(index, 1)
     setSelectedPhrases(temp)
