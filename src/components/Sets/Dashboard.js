@@ -8,6 +8,8 @@ import axios from "axios"
 import Draft from "./draft"
 import { Steps, Button, message, Table, Input, Popconfirm, Space } from 'antd';
 import { FlashcardArray } from "react-quizlet-flashcard";
+import { Opencontainersinitiative } from "styled-icons/simple-icons"
+import firebase from 'firebase/compat/app'
 
 const { Step } = Steps;
 
@@ -16,7 +18,7 @@ const spotifyApi = new SpotifyWebApi({
   clientId: "cb541a417f8b4516990ae7f2aa994ec0",
 })
 
-export default function Dashboard({ code }) {
+export default function Dashboard({ code }, props) {
   const accessToken = useAuth(code)
   const [search, setSearch] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -27,6 +29,8 @@ export default function Dashboard({ code }) {
   const [loading, setLoading] = useState(true)
   const [translatedText, setTranslatedText] = useState([])
   const [data, setData] = useState([])
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
 
   const columns = [
     {
@@ -187,6 +191,22 @@ export default function Dashboard({ code }) {
     console.log('Failed:', errorInfo);
   };
 
+  function onCreate () {
+    axios.post('http://localhost:4000/createNewSet', {
+      headers: { "Access-Control-Allow-Origin": "*" },
+      userUID: firebase.auth().currentUser.uid,
+      title: title,
+      description, description
+    })
+      .then(function (response) {
+        console.log(response);
+        props.history.push("/")
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   //todo: add a step 2. This step should actually translate selected cards from step one. Can add loading while translation service is running.
   return (
     <>
@@ -257,17 +277,17 @@ export default function Dashboard({ code }) {
                 <Form>
                   <Form.Control
                     type="search"
-                    placeholder="Search Songs/Artists"
-                    value={search}
-                    onChange={e => console.log(e.target.value)}
+                    placeholder="Title"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
                   />
                   <Form.Control
                     type="search"
-                    placeholder="Search Songs/Artists"
-                    value={search}
-                    onChange={e => console.log(e.target.value)}
+                    placeholder="Description"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
                   />
-                  <Button onSubmit={()=>{console.log('this submited')}} type="submit">Submit</Button>
+                  <Button onClick={()=>{onCreate()}}>Submit</Button>
                 </Form>
 
               </Row>

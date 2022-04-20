@@ -41,6 +41,7 @@ router
     if (req.body.userUID) {
       //todo: will need to handle all the data from data in Dashboard component.
       let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
+      console.log(req.body.title, req.body.description)
       //let postID = postRef.key
       let temp = req.body.value
       temp['id'] = postRef.key
