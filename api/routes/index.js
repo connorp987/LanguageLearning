@@ -39,14 +39,22 @@ const db = getDatabase();
 router
   .post('/createNewSet', function (req, res, next) {
     if (req.body.userUID) {
-      //todo: will need to handle all the data from data in Dashboard component.
-      let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
       console.log(req.body.title, req.body.description)
-      //let postID = postRef.key
-      let temp = req.body.value
-      temp['id'] = postRef.key
-      postRef.set(temp)
-      res.status(200).send("success")
+      //todo: will need to handle all the data from data in Dashboard component.
+      try {
+        let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
+      
+        //let postID = postRef.key
+        let temp = req.body.value
+        temp['id'] = postRef.key
+        temp['title'] = req.body.title
+        temp['description'] = req.body.description
+        postRef.set(temp)
+        res.status(200).send("success")
+      } catch (err) {
+        console.log(err)
+      }
+      
     } else {
       res.status(403).send('Unauthorized')
     }

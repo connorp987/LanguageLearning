@@ -10,6 +10,7 @@ import { Steps, Button, message, Table, Input, Popconfirm, Space } from 'antd';
 import { FlashcardArray } from "react-quizlet-flashcard";
 import { Opencontainersinitiative } from "styled-icons/simple-icons"
 import firebase from 'firebase/compat/app'
+import { useHistory } from "react-router-dom";
 
 const { Step } = Steps;
 
@@ -31,6 +32,8 @@ export default function Dashboard({ code }, props) {
   const [data, setData] = useState([])
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
+
+  let history = useHistory();
 
   const columns = [
     {
@@ -196,11 +199,13 @@ export default function Dashboard({ code }, props) {
       headers: { "Access-Control-Allow-Origin": "*" },
       userUID: firebase.auth().currentUser.uid,
       title: title,
-      description, description
+      description, description,
+      value: data
     })
       .then(function (response) {
         console.log(response);
-        props.history.push("/")
+        
+        history.push("/")
       })
       .catch(function (error) {
         console.log(error);
