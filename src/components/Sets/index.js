@@ -42,18 +42,6 @@ class Sets extends Component {
           this.setState({ cardData: response.data, cards: response.data.cards })
         }
       })
-
-    axios.get('http://localhost:4000/getSong', {
-      crossdomain: true,
-    })
-      .then((response) => {
-        console.log(response.data[0])
-
-        let text = response.data[0].split('\n').map(str => <p>{str}</p>);
-        console.log(text)
-
-        this.setState({ songText: text, songString: response.data[0] })
-      })
   }
 
   handleChange(e) {

@@ -111,32 +111,6 @@ router
   })
 
 router
-  .get('/getSong', function (req, res, next) {
-    let wikiUrls = []
-    rp(vgmUrl)
-      .then(function (html) {
-        const $ = cheerio.load(html);
-
-        //Need to find some way to add a more specific search for the music
-        wikiUrls.push($('#lyrics-root', html).map(function (i, el) {
-          // this === el
-          let str = $(this).html().replace(/<br\s*\/?>/gi, '\n');
-
-          return $(str).text()
-        })
-          .toArray())
-
-        //console.log($('td > b > a', html).length);
-        //console.log($('td > b > a', html));
-
-        console.log(wikiUrls[0]);
-        res.send(wikiUrls[0])
-      })
-      .catch(function (err) {
-        //handle error
-      });
-
-  })
   .get('/getSets', function (req, res, next) {
     let testArray = db.ref('users/' + req.query.userUID + '/posts')
 
