@@ -45,10 +45,11 @@ router
         let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
       
         //let postID = postRef.key
-        let temp = req.body.value
+        let temp = {}
         temp['id'] = postRef.key
         temp['title'] = req.body.title
         temp['description'] = req.body.description
+        temp['cards'] = req.body.value
         postRef.set(temp)
         res.status(200).send("success")
       } catch (err) {

@@ -134,28 +134,25 @@ class Sets extends Component {
   render() {
     const columns = [
       {
-        title: 'Front',
+        title: 'Original Text',
         dataIndex: 'front',
         key: 'front',
         //render: text => <a>{text}</a>,
       },
       {
-        title: 'Back',
+        title: 'Translation',
         dataIndex: 'back',
         key: 'back',
       }
     ];
     return (
       <div>
-        <Draft addCard={this.addDraftCard} song={this.state.songString} />
+        <div style={{ marginLeft: '33%' }}><FlashcardArray cards={this.state.cards} /></div>
 
-        <div style={{ marginLeft: '30%' }}>
 
-        </div>
+        <Table style={{marginLeft: '15%', width: '65%'}} pagination={false} columns={columns} dataSource={this.state.cards} />
 
-        <Table pagination={false} columns={columns} dataSource={this.state.cards} />
-
-        <div style={{ marginLeft: "25%" }}>
+        <div style={{ marginLeft: "33%" }}>
           <label>Enter a new term:</label>
           <Input data-key="firstBox" style={{ width: "8%" }} type="text" onChange={this.handleChange} onKeyDown={this.handleKeyDown} />
           <Input data-key="secondBox" style={{ width: "8%" }} type="text" onChange={this.handleChange} onKeyDown={this.handleKeyDown} />
