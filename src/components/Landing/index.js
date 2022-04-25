@@ -28,7 +28,7 @@ class Landing extends Component {
       }
     })
       .then((response) => {
-        console.log(response.data)
+        //console.log(response.data)
         this.setState({ sets: response.data })
       })
   }

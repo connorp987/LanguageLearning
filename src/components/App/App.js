@@ -9,7 +9,6 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
-import CreatePage from '../Create'
 import Sets from '../Sets'
 import NewSet from '../Sets/NewSet'
 

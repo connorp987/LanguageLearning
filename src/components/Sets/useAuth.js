@@ -15,10 +15,10 @@ export default function useAuth(code) {
         setAccessToken(res.data.accessToken)
         setRefreshToken(res.data.refreshToken)
         setExpiresIn(res.data.expiresIn)
-        window.history.pushState({}, null, "/newset")
+        window.history.pushState({}, null, "/create")
       })
       .catch(() => {
-        window.location = "/newset"
+        window.location = "/create"
       })
   }, [code])
 
@@ -34,7 +34,7 @@ export default function useAuth(code) {
           setExpiresIn(res.data.expiresIn)
         })
         .catch(() => {
-          window.location = "/newset"
+          window.location = "/create"
         })
     }, (expiresIn - 60) * 1000)
 

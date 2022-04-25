@@ -6,9 +6,7 @@ import { Container, Row, Form, ListGroup } from "react-bootstrap"
 import SpotifyWebApi from "spotify-web-api-node"
 import axios from "axios"
 import Draft from "./draft"
-import { Steps, Button, message, Table, Input, Popconfirm, Space } from 'antd';
-import { FlashcardArray } from "react-quizlet-flashcard";
-import { Opencontainersinitiative } from "styled-icons/simple-icons"
+import { Steps, Button, message, Table, Popconfirm } from 'antd';
 import firebase from 'firebase/compat/app'
 import { useHistory } from "react-router-dom";
 
@@ -40,7 +38,7 @@ export default function Dashboard({ code }, props) {
       title: 'Original Text',
       dataIndex: 'front',
       key: 'front',
-      render: text => <a>{text}</a>,
+      render: text => <>{text}</>,
     },
     {
       title: 'Translated Text',
@@ -53,7 +51,7 @@ export default function Dashboard({ code }, props) {
       render: (text, record) => (
         data.length >= 1 ? (
           <Popconfirm title="Sure to delete?" onConfirm={() => remove(record.key)}>
-            <a>Delete</a>
+            <Button>Delete</Button>
           </Popconfirm>
         ) : null
       ),
@@ -72,11 +70,6 @@ export default function Dashboard({ code }, props) {
       title: 'last'
     },
   ];
-
-  function handleDelete(key) {
-    const dataSource = [...data];
-    setData(dataSource.filter((item) => item.key !== key))
-  };
 
   function chooseTrack(track) {
     setPlayingTrack(track)
@@ -148,18 +141,18 @@ export default function Dashboard({ code }, props) {
         setTranslatedText(res.data)
         setLoading(false)
       })
-  }, [current])
+  }, [current, selectedPhrases])
 
   useEffect(() => {
     if (!loading) return
     translatedText.map((temp, i) => {
-      setData((datasData) => [...datasData, {
+      return setData((datasData) => [...datasData, {
         key: `'${i}'`,
         front: selectedPhrases[i],
         back: temp
       }])
     })
-  }, [translatedText])
+  }, [translatedText, loading, selectedPhrases])
 
   function addPhrase(selectedText) {
     setSelectedPhrases([...selectedPhrases, selectedText])
@@ -186,20 +179,12 @@ export default function Dashboard({ code }, props) {
     setCurrent(current - 1);
   }
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
   function onCreate () {
     axios.post('http://localhost:4000/createNewSet', {
       headers: { "Access-Control-Allow-Origin": "*" },
       userUID: firebase.auth().currentUser.uid,
       title: title,
-      description, description,
+      description: description,
       value: data
     })
       .then(function (response) {

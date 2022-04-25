@@ -3,7 +3,6 @@ import { FlashcardArray } from "react-quizlet-flashcard";
 import { Table, Input, Button } from 'antd';
 import { withAuthorization } from '../Session';
 import axios from 'axios'
-import Draft from './draft'
 
 class Sets extends Component {
   _isMounted = false;
@@ -13,7 +12,6 @@ class Sets extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.addNewCard = this.addNewCard.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
-    this.addDraftCard = this.addDraftCard.bind(this)
 
     this.state = {
       cardData: {},
@@ -37,7 +35,7 @@ class Sets extends Component {
       }
     })
       .then((response) => {
-        console.log(response.data)
+        //console.log(response.data)
         if (this._isMounted) {
           this.setState({ cardData: response.data, cards: response.data.cards })
         }
@@ -82,7 +80,7 @@ class Sets extends Component {
   }
 
   addNewCard() {
-    console.log(this.state.cardData)
+    //console.log(this.state.cardData)
     let tempCard
     if (this.state.cards === undefined) {
       tempCard = {
@@ -116,15 +114,11 @@ class Sets extends Component {
       cardData: tempCard
     })
       .then(function (response) {
-        console.log(response);
+        //console.log(response);
       })
       .catch(function (error) {
         console.log(error);
       });
-  }
-
-  addDraftCard(selectedText) {
-    console.log(selectedText)
   }
 
   handleMouseUp() {
@@ -150,7 +144,7 @@ class Sets extends Component {
         <div style={{ marginLeft: '33%' }}><FlashcardArray cards={this.state.cards} /></div>
 
 
-        <Table style={{marginLeft: '15%', width: '65%'}} pagination={false} columns={columns} dataSource={this.state.cards} />
+        <Table style={{ marginLeft: '15%', width: '65%' }} pagination={false} columns={columns} dataSource={this.state.cards} />
 
         <div style={{ marginLeft: "33%" }}>
           <label>Enter a new term:</label>

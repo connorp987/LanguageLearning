@@ -92,7 +92,7 @@ router
   .post("/login", (req, res) => {
     const code = req.body.code
     const spotifyApi = new SpotifyWebApi({
-      redirectUri: "http://localhost:3000/newset",
+      redirectUri: "http://localhost:3000/create",
       clientId: 'cb541a417f8b4516990ae7f2aa994ec0',
       clientSecret: '2789f2d1599d4a308ad8bdb07a23cf38'
     })
