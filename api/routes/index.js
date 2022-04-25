@@ -39,7 +39,6 @@ const db = getDatabase();
 router
   .post('/createNewSet', function (req, res, next) {
     if (req.body.userUID) {
-      console.log(req.body.title, req.body.description)
       //todo: will need to handle all the data from data in Dashboard component.
       try {
         let postRef = db.ref('users/' + req.body.userUID + '/posts').push()
@@ -118,10 +117,10 @@ router
     testArray.once("value", function (snapshot) {
       var list = [];
       snapshot.forEach(function (elem) {
-        console.log(elem.val())
+        //console.log(elem.val())
         list.push(elem.val());
       });
-      console.log(list)
+      //console.log(list)
       res.send(list)
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
@@ -143,8 +142,8 @@ router
 
     // Translates some text into English
     const [translation] = await translate.translate(req.query.text, req.query.target);
-    console.log(`Text: ${req.query.text}`);
-    console.log(`Translation: ${translation}`);
+    //console.log(`Text: ${req.query.text}`);
+    //console.log(`Translation: ${translation}`);
     res.status(200).send(translation)
   })
   .get("/lyrics", async (req, res) => {
