@@ -34,8 +34,7 @@ const App = () => (
       <Route exact path={ROUTES.HOME} component={HomePage} />
       <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route exact path={ROUTES.ADMIN} component={AdminPage} />
-      <Route exact path={ROUTES.CREATE} component={CreatePage} />
-      <Route exact path='/NewSet' component={NewSet} />
+      <Route exact path={ROUTES.CREATE} component={NewSet} />
       <Route path='/set/:id' component={Sets} />
     </div>
   </Router>
