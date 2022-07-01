@@ -16,7 +16,7 @@
     "express": "~4.16.1",
     "firebase-admin": "^10.0.2",
     "fs": "^0.0.1-security",
-    "got": "^10.4.0",
+    "got": "^11.8.5",
     "http-errors": "~1.6.3",
     "jsdom": "^16.2.2",
     "lyrics-finder": "^21.7.0",
